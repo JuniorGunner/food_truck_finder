@@ -1,13 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('mapid').setView([37.7749, -122.4194], 13); // San Francisco coordinates
+    var markersLayer = new L.LayerGroup().addTo(map); // Create a layer group for markers
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Function to fetch and display the food truck markers
+    function clearMarkers() {
+        markersLayer.clearLayers(); // Clear all markers from the layer group
+    }
+
+    function addMarker(truck) {
+        L.marker([truck.latitude, truck.longitude])
+            .addTo(markersLayer) // Add to the layer group instead of directly to the map
+            .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`);
+    }
+
     function fetchAndDisplayTrucks(lat, lng, distance) {
-        // Construct the API URL with query parameters for location and distance
         const url = new URL('/api/foodtrucks/', window.location.origin);
         if (lat && lng) {
             url.searchParams.append('lat', lat);
@@ -17,60 +26,39 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Fetch the food trucks from the API
         fetch(url)
             .then(response => response.json())
             .then(trucks => {
-                // Clear existing markers if you store them in a global array or layer group
-                // markers.clearLayers();
-
-                // Add markers for each truck
-                trucks.forEach(truck => {
-                    L.marker([truck.latitude, truck.longitude])
-                        .addTo(map)
-                        .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`);
-                });
+                clearMarkers(); // Clear existing markers
+                trucks.forEach(addMarker);
             })
             .catch(error => console.error('Error fetching food truck data:', error));
     }
 
-    // Function to search for a food truck by name
     function searchTruckByName(name) {
-        // Construct the API URL with a search query parameter
         const url = new URL('/api/foodtrucks/', window.location.origin);
         url.searchParams.append('search', name);
 
-        // Fetch the food trucks from the API
         fetch(url)
             .then(response => response.json())
             .then(trucks => {
-                // Clear existing markers and display the searched trucks
-                // markers.clearLayers();
-                trucks.forEach(truck => {
-                    L.marker([truck.latitude, truck.longitude])
-                        .addTo(map)
-                        .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`);
-                });
+                clearMarkers(); // Clear existing markers
+                trucks.forEach(addMarker);
             })
             .catch(error => console.error('Error searching for food truck:', error));
     }
 
-    // Update the map based on the user's current location
     map.locate({setView: true, maxZoom: 16, watch: true});
 
-    // Event listener for location found
     map.on('locationfound', function(e) {
-        // Fetch and display trucks within a 5 km radius of the user's location
         fetchAndDisplayTrucks(e.latlng.lat, e.latlng.lng, 5);
     });
 
-    // Handle the search form submission
     document.getElementById('search-form').addEventListener('submit', function(event) {
         event.preventDefault();
         const searchTerm = document.getElementById('search-input').value;
         searchTruckByName(searchTerm);
     });
 
-    // Initially fetch all food trucks to display
-    fetchAndDisplayTrucks();
+    fetchAndDisplayTrucks(); // Fetch all food trucks initially
 });
