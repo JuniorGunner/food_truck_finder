@@ -16,6 +16,9 @@ shell:
 populate_trucks:
 	docker-compose exec web python manage.py populate_trucks /path/inside/container/food-truck-data.csv
 
+collectstatic:
+	docker-compose exec web python manage.py collectstatic --no-input
+
 # Django commands
 migrations:
 	docker-compose exec web python manage.py makemigrations

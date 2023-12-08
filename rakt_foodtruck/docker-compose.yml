@@ -20,11 +20,18 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - static_volume:/app/collected_static  # Mount the static volume to the static files directory inside the container
+      - /app/node_modules
+      - /app/static
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      - DJANGO_SETTINGS_MODULE=src.settings  # Replace 'your_project.settings' with your actual settings module
 
 volumes:
   postgres_data:
+  static_volume:  # Define the volume for static files
+
