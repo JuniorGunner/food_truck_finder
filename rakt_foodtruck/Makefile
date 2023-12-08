@@ -14,7 +14,7 @@ shell:
 	docker-compose exec web /bin/bash
 
 populate_trucks:
-	docker-compose exec web python manage.py populate_trucks /path/inside/container/food-truck-data.csv
+	docker-compose exec web python manage.py populate_trucks food-truck-data.csv
 
 collectstatic:
 	docker-compose exec web python manage.py collectstatic --no-input

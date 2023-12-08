@@ -1,5 +1,12 @@
 FROM python:3.9-slim
 
+# Install GDAL dependencies
+RUN apt-get update && apt-get install -y \
+  binutils \
+  libproj-dev \
+  gdal-bin \
+  python3-gdal
+
 WORKDIR /app
 
 COPY . /app

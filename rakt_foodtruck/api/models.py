@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.gis.db import models
+from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
 
 
@@ -13,7 +13,7 @@ class FoodTruck(models.Model):
     longitude = models.FloatField()
     status = models.CharField(max_length=100)
     schedule_url = models.URLField(max_length=255, blank=True)
-    location = models.PointField(help_text="Represented as (longitude, latitude)")
+    location = gis_models.PointField(geography=True, null=True, blank=True)
 
 
     def save(self, *args, **kwargs):

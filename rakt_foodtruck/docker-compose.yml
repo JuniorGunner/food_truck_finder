@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres
+    image: postgis/postgis:13-3.1
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -29,9 +29,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DJANGO_SETTINGS_MODULE=src.settings  # Replace 'your_project.settings' with your actual settings module
+      - DJANGO_SETTINGS_MODULE=src.settings
 
 volumes:
   postgres_data:
-  static_volume:  # Define the volume for static files
+  static_volume:
 
