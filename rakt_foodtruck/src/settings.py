@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ox(@*1fz#^u*-xj^zz(_)la3#$$_k_8o6z1t@yb7%-$m0l+j9j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -75,13 +75,45 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'foodtruckdb',
+        'USER': 'user',
+        'PASSWORD': 'password',
+        'HOST': 'db',  # set in docker-compose.yml
+        'PORT': 5432,
     }
 }
 
+# # DRF configuration
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     )
+#     # ... other DRF settings ...
+# }
+
+# Database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'foodtruckdb',
+        'USER': 'user',
+        'PASSWORD': 'password',
+        'HOST': 'db',  # set in docker-compose.yml
+        'PORT': 5432,
+    }
+}
+
+# DRF configuration
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+    # ... other DRF settings ...
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
