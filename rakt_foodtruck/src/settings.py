@@ -87,26 +87,6 @@ DATABASES = {
     }
 }
 
-# # DRF configuration
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-#     # ... other DRF settings ...
-# }
-
-# Database configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'foodtruckdb',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'db',  # set in docker-compose.yml
-        'PORT': 5432,
-    }
-}
-
 # DRF configuration
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
