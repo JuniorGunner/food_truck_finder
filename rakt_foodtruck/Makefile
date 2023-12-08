@@ -13,6 +13,9 @@ stop:
 shell:
 	docker-compose exec web /bin/bash
 
+populate_trucks:
+	docker-compose exec web python manage.py populate_trucks /path/inside/container/food-truck-data.csv
+
 # Django commands
 migrations:
 	docker-compose exec web python manage.py makemigrations
