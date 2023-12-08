@@ -16,14 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .bindPopup(`<b>${truck.applicant}</b><br>${truck.food_items}`);
     }
 
-    function fetchAndDisplayTrucks(lat, lng, distance) {
+    function searchTrucks(searchTerm) {
         const url = new URL('/api/foodtrucks/', window.location.origin);
-        if (lat && lng) {
-            url.searchParams.append('lat', lat);
-            url.searchParams.append('lng', lng);
-            if (distance) {
-                url.searchParams.append('distance', distance);
-            }
+        if (searchTerm) {
+            url.searchParams.append('search', searchTerm);
         }
 
         fetch(url)
@@ -35,30 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching food truck data:', error));
     }
 
-    function searchTruckByName(name) {
-        const url = new URL('/api/foodtrucks/', window.location.origin);
-        url.searchParams.append('search', name);
+    map.locate({setView: true, maxZoom: 16});
 
-        fetch(url)
-            .then(response => response.json())
-            .then(trucks => {
-                clearMarkers(); // Clear existing markers
-                trucks.forEach(addMarker);
-            })
-            .catch(error => console.error('Error searching for food truck:', error));
-    }
-
-    map.locate({setView: true, maxZoom: 16, watch: true});
-
-    map.on('locationfound', function(e) {
-        fetchAndDisplayTrucks(e.latlng.lat, e.latlng.lng, 5);
-    });
-
+    // Event listener for the search form submission
     document.getElementById('search-form').addEventListener('submit', function(event) {
         event.preventDefault();
         const searchTerm = document.getElementById('search-input').value;
-        searchTruckByName(searchTerm);
+        searchTrucks(searchTerm);
     });
 
-    fetchAndDisplayTrucks(); // Fetch all food trucks initially
+    // Initial call to display all trucks
+    fetchAndDisplayTrucks();
 });

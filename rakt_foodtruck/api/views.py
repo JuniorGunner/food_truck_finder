@@ -11,7 +11,7 @@ class FoodTruckViewSet(viewsets.ModelViewSet):
     queryset = FoodTruck.objects.all()
     serializer_class = FoodTruckSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['applicant']
+    search_fields = ['applicant', 'address', 'food_items']
 
     def get_queryset(self):
         queryset = super().get_queryset()
