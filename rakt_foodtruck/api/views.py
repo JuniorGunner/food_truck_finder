@@ -8,12 +8,25 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 
 class FoodTruckViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing food truck instances.
+
+    This viewset provides `list`, `create`, `retrieve`, `update`,
+    and `destroy` actions, automatically mapped to the appropriate
+    URL patterns. Additionally, it supports filtering and searching
+    against the 'applicant', 'address', and 'food_items' fields.
+
+    The `get_queryset` method is overridden to allow filtering by
+    geographic location and distance, when 'lat', 'lng', and 'distance'
+    parameters are provided in the request.
+    """
     queryset = FoodTruck.objects.all()
     serializer_class = FoodTruckSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['applicant', 'address', 'food_items']
 
     def get_queryset(self):
+        # Custom queryset filtering based on location and distance
         queryset = super().get_queryset()
         lat = self.request.query_params.get('lat', None)
         lng = self.request.query_params.get('lng', None)
@@ -33,4 +46,10 @@ class FoodTruckViewSet(viewsets.ModelViewSet):
 
 
 def show_map(request):
+    """
+    Render the map view template.
+
+    This view simply renders the map.html template. The actual
+    map and its functionality are implemented client-side in JavaScript.
+    """
     return render(request, 'map.html')
