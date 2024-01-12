@@ -2,6 +2,11 @@
 
 Welcome to the FoodTruck Finder Project! This guide will help you get the project up and running on your local machine using Docker. 🚀
 
+## Tech Stack 🛠️
+* Django;
+* Django REST Framework;
+* Docker;
+
 ## Prerequisites
 
 Before you begin, make sure you have the following installed:
